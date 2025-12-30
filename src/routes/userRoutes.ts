@@ -2,13 +2,15 @@ import { Router } from "express";
 import mongoose from "mongoose";
 import User from "../models/User.ts"; 
 import validate from "../middlewares/validate.ts"; 
-import { createUserSchema, updateUserSchema } from "../validations/user.update.schema.ts"
+import { createUserSchema, updateUserSchema } from "../validations/user.update.schema.ts";
+import { auth } from "../middlewares/auth.middleware.ts";
+import { isAdmin } from "../middlewares/role.middleware.ts";
 import type { Request, Response } from "express";
 
 const router = Router();
 
-// CREATE
-router.post("/", validate(createUserSchema), async (req: Request, res: Response) => {
+// CREATE - Admin only
+router.post("/", auth, isAdmin, validate(createUserSchema), async (req: Request, res: Response) => {
   try {
     const user = await User.create(req.body);
     res.status(201).json(user);
@@ -17,14 +19,14 @@ router.post("/", validate(createUserSchema), async (req: Request, res: Response)
   }
 });
 
-// READ ALL
-router.get("/", async (_req: Request, res: Response) => {
+// READ ALL - Admin only
+router.get("/", auth, isAdmin, async (_req: Request, res: Response) => {
   const users = await User.find();
   res.json(users);
 });
 
-// READ ONE
-router.get("/:id", async (req: Request, res: Response) => {
+// READ ONE - Any authenticated user
+router.get("/:id", auth, async (req: Request, res: Response) => {
   const { id } = req.params;
   if (!id || !mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid ID" });
@@ -36,21 +38,33 @@ router.get("/:id", async (req: Request, res: Response) => {
   res.json(user);
 });
 
-// UPDATE
-router.put("/:id", validate(updateUserSchema), async (req: Request, res: Response) => {
+// UPDATE - Admin can update anyone, users can update themselves
+router.put("/:id", auth, validate(updateUserSchema), async (req: Request & { user?: { id: string; role: string } }, res: Response) => {
   const { id } = req.params;
+  const loggedInUser = req.user;
+
   if (!id || !mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid ID" });
   }
 
-  const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
-  if (!updatedUser) return res.status(404).json({ message: "User not found" });
+  // Check authorization
+  if (loggedInUser?.role !== "admin" && loggedInUser?.id !== id) {
+    return res.status(403).json({ message: "Forbidden" });
+  }
 
-  res.json(updatedUser);
+  try {
+    const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
+    if (!updatedUser) return res.status(404).json({ message: "User not found" });
+
+    res.json(updatedUser);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
-// DELETE
-router.delete("/:id", async (req: Request, res: Response) => {
+
+// DELETE - Admin only
+router.delete("/:id", auth, isAdmin, async (req: Request, res: Response) => {
   const { id } = req.params;
   if (!id || !mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid ID" });
