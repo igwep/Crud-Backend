@@ -16,6 +16,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create user with hashed password and optional role
+
+    //
 const isDev = process.env.NODE_ENV !== "production";
 
 const user = await User.create({
