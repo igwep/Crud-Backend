@@ -6,9 +6,9 @@ export interface IUser extends Document {
   email: string;
   password: string;          
   role: "user" | "admin";   
-  age?: number;
-  resetPasswordToken?: string;
-  resetPasswordExpires?: Date;
+  age?: number | undefined;
+  resetPasswordToken?: string | undefined;
+  resetPasswordExpires?: Date | undefined;
   createdAt: Date;
   updatedAt: Date;
 }
