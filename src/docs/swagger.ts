@@ -1,16 +1,11 @@
-// src/swaggerSpec.ts
 import swaggerJsdoc from "swagger-jsdoc";
-import path from "path";
 
-// Detect if we are in production (Render) or dev
 const isProd = process.env.NODE_ENV === "production";
 
-// Determine path to route files for Swagger
-// - Dev: TypeScript files
-// - Prod: Compiled JS files in dist
+// Dev: TS files, Prod: compiled JS files
 const apisPath = isProd
-  ? path.join(__dirname, "routes/**/*.js")
-  : path.join(__dirname, "routes/**/*.ts");
+  ? "./dist/routes/**/*.js"   // compiled JS in dist
+  : "./src/routes/**/*.ts";   // TS files in src
 
 export const swaggerSpec = swaggerJsdoc({
   definition: {
