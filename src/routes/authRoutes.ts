@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { register, login,forgotPassword, resetPassword } from "../controllers/auth.controller.ts"; // adjust path if needed
-import validate from "../middlewares/validate.ts";
-import { registerUserSchema, loginUserSchema } from "../validations/user.update.schema.ts";
-import { authLimiter } from "../middlewares/rateLimiter.ts";
+import { register, login,forgotPassword, resetPassword } from "../controllers/auth.controller"; // adjust path if needed
+import validate from "../middlewares/validate";
+import { registerUserSchema, loginUserSchema } from "../validations/user.update.schema";
+import { authLimiter } from "../middlewares/rateLimiter";
 
 const router = Router();
 

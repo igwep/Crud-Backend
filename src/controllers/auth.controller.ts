@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import User from "../models/User.ts";
+import User from "../models/User";
 import crypto from "crypto";
-import { sendEmail } from "../utils/email.ts";
+import { sendEmail } from "../utils/email";
 
 
 const JWT_SECRET = process.env.JWT_SECRET || "secret";

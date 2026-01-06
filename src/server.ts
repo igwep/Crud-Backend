@@ -1,9 +1,9 @@
 import "dotenv/config";
 import express, { type Application } from "express";
 import mongoose from "mongoose";
-import userRoutes from "./routes/userRoutes.ts"; 
-import { errorHandler } from "./middlewares/errorHandler.ts";
-import authRoutes from "./routes/authRoutes.ts";
+import userRoutes from "./routes/userRoutes";
+import { errorHandler } from "./middlewares/errorHandler";
+import authRoutes from "./routes/authRoutes";
 
 const app: Application = express();
 

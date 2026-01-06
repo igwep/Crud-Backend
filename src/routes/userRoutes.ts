@@ -1,10 +1,10 @@
 import { Router } from "express";
 import mongoose from "mongoose";
-import User from "../models/User.ts"; 
-import validate from "../middlewares/validate.ts"; 
-import { createUserSchema, updateUserSchema } from "../validations/user.update.schema.ts";
-import { auth } from "../middlewares/auth.middleware.ts";
-import { isAdmin } from "../middlewares/role.middleware.ts";
+import User from "../models/User";
+import validate from "../middlewares/validate";
+import { createUserSchema, updateUserSchema } from "../validations/user.update.schema";
+import { auth } from "../middlewares/auth.middleware";
+import { isAdmin } from "../middlewares/role.middleware";
 import type { Request, Response } from "express";
 
 const router = Router();

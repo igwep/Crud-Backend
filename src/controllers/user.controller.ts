@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
-import User from "../models/User.ts";
-import { AppError } from "../utils/appError.ts";
+import User from "../models/User";
+import { AppError } from "../utils/appError";
 
 export const updateUser = async (
   req: Request,

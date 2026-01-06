@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import User, { type IUser } from "../models/User.ts"; // .js for ES Modules
+import User, { type IUser } from "../models/User";
 
 const JWT_SECRET = process.env.JWT_SECRET || "secret";
 
