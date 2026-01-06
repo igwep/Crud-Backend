@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import userRoutes from "./routes/userRoutes";
 import { errorHandler } from "./middlewares/errorHandler";
 import authRoutes from "./routes/authRoutes";
+import swaggerRouter from "./swaggerRouter";
 
 const app: Application = express();
 
@@ -14,6 +15,8 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 
 app.use("/api/auth", authRoutes);
+
+app.use(swaggerRouter);
 
 
 app.use(errorHandler);
